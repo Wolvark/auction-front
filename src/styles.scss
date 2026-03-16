@@ -1,0 +1,70 @@
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$violet-palette,
+        secondary: mat.$cyan-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  height: 100%;
+}
+
+/* Global table styles */
+.mat-mdc-table {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Page header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+/* Chip styles */
+.status-chip {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+/* Status colors */
+.status-draft     { background: #e3f2fd; color: #1565c0; }
+.status-ready     { background: #e8f5e9; color: #2e7d32; }
+.status-auctioning{ background: #fff3e0; color: #e65100; }
+.status-sold      { background: #f3e5f5; color: #6a1b9a; }
+.status-cancelled { background: #fce4ec; color: #b71c1c; }
+.status-scheduled { background: #e8eaf6; color: #283593; }
+.status-active    { background: #e8f5e9; color: #1b5e20; }
+.status-ended     { background: #f5f5f5; color: #424242; }
+.status-pending   { background: #fff8e1; color: #f57f17; }
+.status-accepted  { background: #e8f5e9; color: #1b5e20; }
+.status-rejected  { background: #fce4ec; color: #b71c1c; }
+
