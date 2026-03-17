@@ -1,0 +1,48 @@
+
+    <h2 mat-dialog-title>{{ isEdit ? 'Edit Customer' : 'Add Customer' }}</h2>
+    <mat-dialog-content>
+      <form [formGroup]="form" class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" />
+          @if (form.get('firstName')?.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" />
+          @if (form.get('lastName')?.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" />
+          @if (form.get('email')?.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+          @if (form.get('email')?.hasError('email')) {
+            <mat-error>Invalid email</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName="phone" />
+          @if (form.get('phone')?.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-flat-button [disabled]="saving" (click)="save()">
+        @if (saving) {
+          <mat-spinner diameter="20" />
+        } @else {
+          {{ isEdit ? 'Update' : 'Create' }}
+        }
+      </button>
+    </mat-dialog-actions>
+  

@@ -23,53 +23,8 @@ import { Bid, BidStatus } from '../../models';
     MatButtonModule,
     MatProgressSpinnerModule,
   ],
-  template: `
-    <h2 mat-dialog-title>{{ isStatusUpdate ? 'Update Bid Status' : 'Place Bid' }}</h2>
-    <mat-dialog-content>
-      @if (isStatusUpdate) {
-        <form [formGroup]="statusForm" class="form-single" style="padding: 8px 0; min-width: 380px;">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Status</mat-label>
-            <mat-select formControlName="status">
-              @for (s of bidStatuses; track s) {
-                <mat-option [value]="s">{{ s }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </form>
-      } @else {
-        <form [formGroup]="form" class="form-grid">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Item Name</mat-label>
-            <input matInput formControlName="itemName" />
-            @if (form.get('itemName')?.hasError('required')) {
-              <mat-error>Required</mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Amount</mat-label>
-            <input matInput formControlName="amount" type="number" step="0.01" />
-            @if (form.get('amount')?.hasError('required')) {
-              <mat-error>Required</mat-error>
-            }
-          </mat-form-field>
-        </form>
-      }
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-flat-button [disabled]="saving" (click)="save()">
-        @if (saving) { <mat-spinner diameter="20" /> } @else { {{ isStatusUpdate ? 'Update' : 'Place Bid' }} }
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [
-    `
-      .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; padding: 8px 0; min-width: 400px; }
-      .full-width { grid-column: span 2; }
-    `,
-  ],
+  templateUrl: './bid-form.component.html',
+  styleUrl: './bid-form.component.css',
 })
 export class BidFormComponent {
   private fb = inject(FormBuilder);

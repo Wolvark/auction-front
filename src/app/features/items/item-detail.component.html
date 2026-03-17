@@ -1,0 +1,107 @@
+
+    <div class="page-header">
+      <div class="back-btn">
+        <a mat-icon-button routerLink="/items"><mat-icon>arrow_back</mat-icon></a>
+        <h1>Item Detail</h1>
+      </div>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-center"><mat-spinner diameter="48" /></div>
+    } @else if (!item()) {
+      <mat-card><mat-card-content>Item not found.</mat-card-content></mat-card>
+    } @else {
+      <div class="detail-grid">
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>{{ item()!.title }}</mat-card-title>
+            <mat-card-subtitle>
+              <span class="status-chip status-{{ item()!.status.toLowerCase() }}">{{ item()!.status }}</span>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Category</span>
+                <span class="info-value">{{ item()!.category }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Condition</span>
+                <span class="info-value">{{ item()!.condition }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Owner ID</span>
+                <span class="info-value">{{ item()!.ownerId }}</span>
+              </div>
+              <div class="info-item full-width">
+                <span class="info-label">Description</span>
+                <span class="info-value">{{ item()!.description || '—' }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="status-card">
+          <mat-card-header>
+            <mat-card-title>Update Status</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>New Status</mat-label>
+              <mat-select [(value)]="newStatus">
+                @for (s of itemStatuses; track s) {
+                  <mat-option [value]="s">{{ s }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-flat-button [disabled]="updatingStatus()" (click)="updateStatus()">
+              @if (updatingStatus()) { <mat-spinner diameter="20" /> } @else { Update Status }
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="media-card">
+          <mat-card-header>
+            <mat-card-title>Media Links</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (item()!.mediaLinks.length === 0) {
+              <p class="no-media">No media attached.</p>
+            } @else {
+              <div class="media-list">
+                @for (m of item()!.mediaLinks; track m.id) {
+                  <div class="media-item">
+                    <mat-icon>{{ m.mediaType === 'IMAGE' ? 'image' : 'videocam' }}</mat-icon>
+                    <a [href]="m.url" target="_blank" class="media-url">{{ m.url }}</a>
+                    <button mat-icon-button color="warn" matTooltip="Remove" (click)="removeMedia(m.id)">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+            <mat-divider style="margin: 16px 0" />
+            <form [formGroup]="mediaForm" class="media-add-form">
+              <mat-form-field appearance="outline">
+                <mat-label>Media Type</mat-label>
+                <mat-select formControlName="mediaType">
+                  @for (t of mediaTypes; track t) {
+                    <mat-option [value]="t">{{ t }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="url-field">
+                <mat-label>URL</mat-label>
+                <input matInput formControlName="url" />
+              </mat-form-field>
+              <button mat-flat-button type="button" [disabled]="addingMedia()" (click)="addMedia()">
+                @if (addingMedia()) { <mat-spinner diameter="20" /> } @else { Add }
+              </button>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
+  

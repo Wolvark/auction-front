@@ -24,78 +24,8 @@ import { Auction } from '../../models';
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  template: `
-    <h2 mat-dialog-title>{{ isEdit ? 'Edit Auction' : 'Create Auction' }}</h2>
-    <mat-dialog-content>
-      <form [formGroup]="form" class="form-grid">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Item ID</mat-label>
-          <input matInput formControlName="itemId" type="number" />
-          @if (form.get('itemId')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Start Price</mat-label>
-          <input matInput formControlName="startPrice" type="number" step="0.01" />
-          @if (form.get('startPrice')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Min Bid Increment</mat-label>
-          <input matInput formControlName="minBidIncrement" type="number" step="0.01" />
-          @if (form.get('minBidIncrement')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Reserve Price</mat-label>
-          <input matInput formControlName="reservePrice" type="number" step="0.01" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Buy-Out Price</mat-label>
-          <input matInput formControlName="buyOutPrice" type="number" step="0.01" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Start Time</mat-label>
-          <input matInput [matDatepicker]="startPicker" formControlName="startTime" />
-          <mat-datepicker-toggle matIconSuffix [for]="startPicker" />
-          <mat-datepicker #startPicker />
-          @if (form.get('startTime')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>End Time</mat-label>
-          <input matInput [matDatepicker]="endPicker" formControlName="endTime" />
-          <mat-datepicker-toggle matIconSuffix [for]="endPicker" />
-          <mat-datepicker #endPicker />
-          @if (form.get('endTime')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-      </form>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-flat-button [disabled]="saving" (click)="save()">
-        @if (saving) { <mat-spinner diameter="20" /> } @else { {{ isEdit ? 'Update' : 'Create' }} }
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [
-    `
-      .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; padding: 8px 0; min-width: 480px; }
-      .full-width { grid-column: span 2; }
-    `,
-  ],
+  templateUrl: './auction-form.component.html',
+  styleUrl: './auction-form.component.css',
 })
 export class AuctionFormComponent {
   private fb = inject(FormBuilder);
