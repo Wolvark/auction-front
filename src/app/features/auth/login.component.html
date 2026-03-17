@@ -1,0 +1,65 @@
+
+    <div class="auth-container">
+      <mat-card class="auth-card">
+        <mat-card-header class="auth-header">
+          <mat-icon class="brand-icon">gavel</mat-icon>
+          <mat-card-title>AuctionHub</mat-card-title>
+          <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>username</mat-label>
+              <input matInput formControlName="username" type="username" />
+              <mat-icon matSuffix>username</mat-icon>
+              @if (form.get('username')?.hasError('required') && form.get('username')?.touched) {
+                <mat-error>username is required</mat-error>
+              } @else if (
+                form.get('username')?.hasError('username') && form.get('username')?.touched
+              ) {
+                <mat-error>Enter a valid username</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Password</mat-label>
+              <input
+                matInput
+                formControlName="password"
+                [type]="hidePassword ? 'password' : 'text'"
+                autocomplete="current-password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePassword = !hidePassword"
+              >
+                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+                <mat-error>Password is required</mat-error>
+              }
+            </mat-form-field>
+
+            <button
+              mat-flat-button
+              class="full-width submit-btn"
+              type="submit"
+              [disabled]="loading"
+            >
+              @if (loading) {
+                <mat-spinner diameter="20" />
+              } @else {
+                Sign In
+              }
+            </button>
+          </form>
+        </mat-card-content>
+        <mat-card-actions class="auth-actions">
+          <span>Don't have an account?</span>
+          <a routerLink="/register" mat-button>Register</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  

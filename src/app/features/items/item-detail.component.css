@@ -1,0 +1,20 @@
+
+      .back-btn { display: flex; align-items: center; gap: 8px; }
+      .loading-center { display: flex; justify-content: center; padding: 80px 0; }
+      .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1000px; }
+      .info-card { grid-column: span 2; border-radius: 16px !important; }
+      .status-card, .media-card { border-radius: 16px !important; }
+      .media-card { grid-column: span 2; }
+      .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 12px; }
+      .info-item { display: flex; flex-direction: column; gap: 2px; }
+      .info-item.full-width { grid-column: span 2; }
+      .info-label { font-size: 0.75rem; color: var(--mat-sys-on-surface-variant); text-transform: uppercase; letter-spacing: 0.5px; }
+      .info-value { font-size: 1rem; color: var(--mat-sys-on-surface); }
+      .no-media { color: var(--mat-sys-on-surface-variant); }
+      .media-list { display: flex; flex-direction: column; gap: 8px; }
+      .media-item { display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--mat-sys-surface-container-low); border-radius: 8px; }
+      .media-url { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.875rem; }
+      .media-add-form { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+      .url-field { flex: 1; min-width: 200px; }
+      .full-width { width: 100%; }
+    

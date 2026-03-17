@@ -23,61 +23,8 @@ import { Item, ItemCategory, ItemCondition } from '../../models';
     MatButtonModule,
     MatProgressSpinnerModule,
   ],
-  template: `
-    <h2 mat-dialog-title>{{ isEdit ? 'Edit Item' : 'Add Item' }}</h2>
-    <mat-dialog-content>
-      <form [formGroup]="form" class="form-grid">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Title</mat-label>
-          <input matInput formControlName="title" />
-          @if (form.get('title')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Category</mat-label>
-          <mat-select formControlName="category">
-            @for (c of categories; track c) {
-              <mat-option [value]="c">{{ c }}</mat-option>
-            }
-          </mat-select>
-          @if (form.get('category')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Condition</mat-label>
-          <mat-select formControlName="condition">
-            @for (c of conditions; track c) {
-              <mat-option [value]="c">{{ c }}</mat-option>
-            }
-          </mat-select>
-          @if (form.get('condition')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description" rows="3"></textarea>
-        </mat-form-field>
-      </form>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-flat-button [disabled]="saving" (click)="save()">
-        @if (saving) { <mat-spinner diameter="20" /> } @else { {{ isEdit ? 'Update' : 'Create' }} }
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [
-    `
-      .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; padding: 8px 0; min-width: 480px; }
-      .full-width { grid-column: span 2; }
-    `,
-  ],
+  templateUrl: './item-form.component.html',
+  styleUrl: './item-form.component.css',
 })
 export class ItemFormComponent {
   private fb = inject(FormBuilder);
