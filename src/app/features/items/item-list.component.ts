@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { ItemService } from '../../services/item.service';
+import { AuthService } from '../../services/auth.service';
 import { Item, ItemStatus, ItemCategory } from '../../models';
 import { ItemFormComponent } from './item-form.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
@@ -129,6 +130,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
 })
 export class ItemListComponent implements OnInit {
   private itemService = inject(ItemService);
+  private authService = inject(AuthService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
 
@@ -145,7 +147,11 @@ export class ItemListComponent implements OnInit {
 
   load(): void {
     this.loading.set(true);
-    this.itemService.getAll().subscribe({
+    const customer = this.authService.currentCustomer();
+    const obs = customer
+      ? this.itemService.getByOwner(customer.id)
+      : this.itemService.getAll();
+    obs.subscribe({
       next: (data) => { this.items.set(data); this.applyFilter(); this.loading.set(false); },
       error: () => { this.snackBar.open('Failed to load items', 'Close', { duration: 3000 }); this.loading.set(false); },
     });

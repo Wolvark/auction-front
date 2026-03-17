@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { AuthService } from '../../services/auth.service';
 
 interface NavItem {
   label: string;
@@ -24,6 +27,8 @@ interface NavItem {
     MatListModule,
     MatIconModule,
     MatButtonModule,
+    MatMenuModule,
+    MatTooltipModule,
   ],
   template: `
     <mat-sidenav-container class="sidenav-container">
@@ -51,12 +56,24 @@ interface NavItem {
         <mat-toolbar class="top-toolbar">
           <span class="toolbar-title">Auction Management Platform</span>
           <span class="spacer"></span>
-          <button mat-icon-button>
-            <mat-icon>notifications</mat-icon>
-          </button>
-          <button mat-icon-button>
+          @if (authService.currentCustomer()) {
+            <span class="user-name">{{ authService.currentCustomer()!.firstName }} {{ authService.currentCustomer()!.lastName }}</span>
+          }
+          <button mat-icon-button [matMenuTriggerFor]="accountMenu" matTooltip="Account">
             <mat-icon>account_circle</mat-icon>
           </button>
+          <mat-menu #accountMenu="matMenu">
+            @if (authService.currentCustomer()) {
+              <div class="menu-user-info">
+                <span class="menu-user-name">{{ authService.currentCustomer()!.firstName }} {{ authService.currentCustomer()!.lastName }}</span>
+                <span class="menu-user-email">{{ authService.currentCustomer()!.email }}</span>
+              </div>
+            }
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Sign Out</span>
+            </button>
+          </mat-menu>
         </mat-toolbar>
         <div class="page-content">
           <router-outlet />
@@ -121,6 +138,11 @@ interface NavItem {
       .spacer {
         flex: 1;
       }
+      .user-name {
+        font-size: 0.9rem;
+        color: var(--mat-sys-on-surface-variant);
+        margin-right: 8px;
+      }
       .content {
         background: var(--mat-sys-surface-container-lowest);
       }
@@ -128,15 +150,35 @@ interface NavItem {
         padding: 24px;
         min-height: calc(100vh - 64px);
       }
+      .menu-user-info {
+        display: flex;
+        flex-direction: column;
+        padding: 12px 16px 8px;
+        border-bottom: 1px solid var(--mat-sys-outline-variant);
+        margin-bottom: 4px;
+      }
+      .menu-user-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+      .menu-user-email {
+        font-size: 0.8rem;
+        color: var(--mat-sys-on-surface-variant);
+      }
     `,
   ],
 })
 export class NavComponent {
+  authService = inject(AuthService);
+
   navItems: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
-    { label: 'Customers', icon: 'people', route: '/customers' },
-    { label: 'Items', icon: 'inventory_2', route: '/items' },
+    { label: 'My Items', icon: 'inventory_2', route: '/items' },
     { label: 'Auctions', icon: 'gavel', route: '/auctions' },
-    { label: 'Bids', icon: 'price_check', route: '/bids' },
+    { label: 'My Bids', icon: 'price_check', route: '/bids' },
   ];
+
+  logout(): void {
+    this.authService.logout();
+  }
 }

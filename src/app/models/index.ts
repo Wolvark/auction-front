@@ -128,3 +128,21 @@ export interface AddMediaDto {
   mediaType: MediaType;
   url: string;
 }
+
+export interface RegisterDto {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
+export interface LoginDto {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  customer: Customer;
+}
