@@ -34,20 +34,32 @@ import { AuthService } from '../../services/auth.service';
         <mat-card-content>
           <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email" type="email" autocomplete="email" />
-              <mat-icon matSuffix>email</mat-icon>
-              @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
-                <mat-error>Email is required</mat-error>
-              } @else if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
-                <mat-error>Enter a valid email</mat-error>
+              <mat-label>username</mat-label>
+              <input matInput formControlName="username" type="username" />
+              <mat-icon matSuffix>username</mat-icon>
+              @if (form.get('username')?.hasError('required') && form.get('username')?.touched) {
+                <mat-error>username is required</mat-error>
+              } @else if (
+                form.get('username')?.hasError('username') && form.get('username')?.touched
+              ) {
+                <mat-error>Enter a valid username</mat-error>
               }
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Password</mat-label>
-              <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="current-password" />
-              <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+              <input
+                matInput
+                formControlName="password"
+                [type]="hidePassword ? 'password' : 'text'"
+                autocomplete="current-password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePassword = !hidePassword"
+              >
                 <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
               @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
@@ -55,7 +67,12 @@ import { AuthService } from '../../services/auth.service';
               }
             </mat-form-field>
 
-            <button mat-flat-button class="full-width submit-btn" type="submit" [disabled]="loading">
+            <button
+              mat-flat-button
+              class="full-width submit-btn"
+              type="submit"
+              [disabled]="loading"
+            >
               @if (loading) {
                 <mat-spinner diameter="20" />
               } @else {
@@ -136,7 +153,7 @@ export class LoginComponent {
   loading = false;
 
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.required]],
     password: ['', Validators.required],
   });
 
@@ -146,14 +163,14 @@ export class LoginComponent {
       return;
     }
     this.loading = true;
-    const { email, password } = this.form.value;
-    this.authService.login({ email: email!, password: password! }).subscribe({
+    const { username, password } = this.form.value;
+    this.authService.login({ username: username!, password: password! }).subscribe({
       next: () => {
         this.snackBar.open('Welcome back!', 'Close', { duration: 2000 });
         this.router.navigate(['/dashboard']);
       },
       error: () => {
-        this.snackBar.open('Invalid email or password', 'Close', { duration: 3000 });
+        this.snackBar.open('Invalid username or password', 'Close', { duration: 3000 });
         this.loading = false;
       },
     });
