@@ -40,6 +40,31 @@ export enum BidStatus {
   ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED',
   CANCELLED = 'CANCELLED',
+  ACTIVE = 'ACTIVE',
+  OUTBID = 'OUTBID',
+}
+
+export enum PaymentMethod {
+  VISA = 'VISA',
+  MASTERCARD = 'MASTERCARD',
+  GOOGLE_PAY = 'GOOGLE_PAY',
+  APPLE_PAY = 'APPLE_PAY',
+  INTERNAL = 'INTERNAL',
+}
+
+export enum TransactionStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  REVERSED = 'REVERSED',
+}
+
+export enum TransactionType {
+  DEPOSIT = 'DEPOSIT',
+  WITHDRAWAL = 'WITHDRAWAL',
+  BID_HOLD = 'BID_HOLD',
+  BID_RELEASE = 'BID_RELEASE',
+  PAYMENT = 'PAYMENT',
 }
 
 export enum MediaType {
@@ -76,6 +101,7 @@ export interface Item {
 export interface Auction {
   id: number;
   itemId: number;
+  itemTitle: string;
   startPrice: number;
   startTime: string;
   endTime: string;
@@ -83,6 +109,8 @@ export interface Auction {
   reservePrice: number;
   buyOutPrice: number;
   status: AuctionStatus;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Bid {
@@ -90,7 +118,38 @@ export interface Bid {
   itemName: string;
   amount: number;
   customerId: number;
+  customerEmail?: string;
+  auctionId?: number;
   status: BidStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Account {
+  id: number;
+  customerId: number;
+  username: string;
+  balance: number;
+  heldAmount: number;
+  availableBalance: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Transaction {
+  id: number;
+  amount: number;
+  type: TransactionType;
+  paymentMethod: PaymentMethod;
+  status: TransactionStatus;
+  referenceId?: string;
+  description?: string;
+  createdAt?: string;
+}
+
+export interface DepositRequestDto {
+  amount: number;
+  paymentMethod: PaymentMethod;
 }
 
 export interface CreateCustomerDto {
@@ -123,6 +182,7 @@ export interface CreateBidDto {
   itemName: string;
   amount: number;
   customerId: number;
+  auctionId: number;
 }
 
 export interface AddMediaDto {
