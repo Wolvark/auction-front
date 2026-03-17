@@ -55,6 +55,16 @@ import { Customer } from '../../models';
             <mat-error>Required</mat-error>
           }
         </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" />
+          @if (form.get('username')?.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+          @if (form.get('username')?.hasError('minlength')) {
+            <mat-error>Minimum 3 characters</mat-error>
+          }
+        </mat-form-field>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
@@ -97,12 +107,13 @@ export class CustomerFormComponent {
     lastName: [this.data?.lastName ?? '', Validators.required],
     email: [this.data?.email ?? '', [Validators.required, Validators.email]],
     phone: [this.data?.phone ?? '', Validators.required],
+    username: [this.data?.username ?? '', [Validators.required, Validators.minLength(3)]],
   });
 
   save(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.saving = true;
-    const dto = this.form.value as { firstName: string; lastName: string; email: string; phone: string };
+    const dto = this.form.value as { firstName: string; lastName: string; email: string; phone: string; username: string };
     const op = this.isEdit
       ? this.customerService.update(this.data!.id, dto)
       : this.customerService.create(dto);

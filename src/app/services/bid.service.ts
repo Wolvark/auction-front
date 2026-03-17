@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Bid, CreateBidDto, BidStatus } from '../models';
 
-const BASE = 'http://localhost:8080/api/v1';
+import { environment } from '../../environments/environment';
+
+const BASE = environment.apiBaseUrl;
 
 @Injectable({ providedIn: 'root' })
 export class BidService {

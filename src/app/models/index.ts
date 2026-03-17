@@ -53,6 +53,84 @@ export interface Customer {
   lastName: string;
   email: string;
   phone: string;
+  username: string;
+}
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+
+export interface RegisterDto {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  username: string;
+  password: string;
+}
+
+export interface LoginDto {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  customerId: number;
+  username: string;
+  email: string;
+}
+
+// ── Account / Wallet ──────────────────────────────────────────────────────────
+
+export enum TransactionType {
+  DEPOSIT = 'DEPOSIT',
+  WITHDRAWAL = 'WITHDRAWAL',
+  BID_HOLD = 'BID_HOLD',
+  BID_RELEASE = 'BID_RELEASE',
+  BID_CHARGE = 'BID_CHARGE',
+}
+
+export enum PaymentMethod {
+  VISA = 'VISA',
+  MASTERCARD = 'MASTERCARD',
+  GOOGLE_PAY = 'GOOGLE_PAY',
+  APPLE_PAY = 'APPLE_PAY',
+}
+
+export interface Transaction {
+  id: number;
+  type: TransactionType;
+  amount: number;
+  description: string;
+  paymentMethod?: PaymentMethod;
+  createdAt: string;
+}
+
+export interface BidHistoryEntry {
+  bidId: number;
+  auctionId: number;
+  itemName: string;
+  amount: number;
+  status: BidStatus;
+  placedAt: string;
+}
+
+export interface Account {
+  id: number;
+  customerId: number;
+  balance: number;
+  heldAmount: number;
+  availableBalance: number;
+  transactions: Transaction[];
+  bidHistory: BidHistoryEntry[];
+}
+
+export interface AddFundsDto {
+  amount: number;
+  paymentMethod: PaymentMethod;
+  cardNumber?: string;
+  cardHolderName?: string;
+  expiryDate?: string;
+  cvv?: string;
 }
 
 export interface MediaLink {
@@ -97,6 +175,7 @@ export interface CreateCustomerDto {
   lastName: string;
   email: string;
   phone: string;
+  username: string;
 }
 
 export interface CreateItemDto {
