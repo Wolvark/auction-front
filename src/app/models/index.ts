@@ -49,6 +49,7 @@ export enum MediaType {
 
 export interface Customer {
   id: number;
+  username: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -130,6 +131,7 @@ export interface AddMediaDto {
 }
 
 export interface RegisterDto {
+  username: string;
   firstName: string;
   lastName: string;
   email: string;

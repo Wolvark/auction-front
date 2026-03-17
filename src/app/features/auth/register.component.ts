@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -55,6 +56,19 @@ const passwordMatchValidator: ValidatorFn = (group: AbstractControl): Validation
                 }
               </mat-form-field>
             </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username" autocomplete="username" />
+              <mat-icon matSuffix>alternate_email</mat-icon>
+              @if (form.get('username')?.hasError('required') && form.get('username')?.touched) {
+                <mat-error>Username is required</mat-error>
+              } @else if (form.get('username')?.hasError('pattern') && form.get('username')?.touched) {
+                <mat-error>Username must be at least 3 characters and contain only letters, numbers, underscores, and hyphens</mat-error>
+              } @else if (form.get('username')?.hasError('usernameTaken') && form.get('username')?.touched) {
+                <mat-error>Username is already taken</mat-error>
+              }
+            </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Email</mat-label>
@@ -190,6 +204,7 @@ export class RegisterComponent {
     {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      username: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_-]{3,}$/)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -204,9 +219,10 @@ export class RegisterComponent {
       return;
     }
     this.loading = true;
-    const { firstName, lastName, email, phone, password } = this.form.value;
+    const { firstName, lastName, username, email, phone, password } = this.form.value;
     this.authService
       .register({
+        username: username!,
         firstName: firstName!,
         lastName: lastName!,
         email: email!,
@@ -218,8 +234,14 @@ export class RegisterComponent {
           this.snackBar.open('Account created! Please sign in.', 'Close', { duration: 3000 });
           this.router.navigate(['/login']);
         },
-        error: () => {
-          this.snackBar.open('Registration failed. Please try again.', 'Close', { duration: 3000 });
+        error: (err: HttpErrorResponse) => {
+          if (err.status === 409) {
+            const usernameCtrl = this.form.get('username');
+            usernameCtrl?.setErrors({ ...usernameCtrl.errors, usernameTaken: true });
+            this.snackBar.open('Username is already taken. Please choose another.', 'Close', { duration: 4000 });
+          } else {
+            this.snackBar.open('Registration failed. Please try again.', 'Close', { duration: 3000 });
+          }
           this.loading = false;
         },
       });
