@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from '../../services/item.service';
+import { AuthService } from '../../services/auth.service';
 import { Item, ItemCategory, ItemCondition } from '../../models';
 
 @Component({
@@ -59,14 +60,6 @@ import { Item, ItemCategory, ItemCondition } from '../../models';
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Owner ID</mat-label>
-          <input matInput formControlName="ownerId" type="number" />
-          @if (form.get('ownerId')?.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
           <mat-label>Description</mat-label>
           <textarea matInput formControlName="description" rows="3"></textarea>
         </mat-form-field>
@@ -89,6 +82,7 @@ import { Item, ItemCategory, ItemCondition } from '../../models';
 export class ItemFormComponent {
   private fb = inject(FormBuilder);
   private itemService = inject(ItemService);
+  private authService = inject(AuthService);
   private snackBar = inject(MatSnackBar);
   private dialogRef = inject(MatDialogRef<ItemFormComponent>);
   data = inject<Item | null>(MAT_DIALOG_DATA);
@@ -98,11 +92,18 @@ export class ItemFormComponent {
   categories = Object.values(ItemCategory);
   conditions = Object.values(ItemCondition);
 
+  private get currentOwnerId(): number {
+    const id = this.data?.ownerId ?? this.authService.currentCustomer()?.id;
+    if (!id) {
+      console.warn('ItemFormComponent: currentCustomer is not available');
+    }
+    return id ?? 0;
+  }
+
   form = this.fb.group({
     title: [this.data?.title ?? '', Validators.required],
     category: [this.data?.category ?? null, Validators.required],
     condition: [this.data?.condition ?? null, Validators.required],
-    ownerId: [this.data?.ownerId ?? null, Validators.required],
     description: [this.data?.description ?? ''],
   });
 
@@ -114,7 +115,7 @@ export class ItemFormComponent {
       title: val.title!,
       category: val.category as ItemCategory,
       condition: val.condition as ItemCondition,
-      ownerId: Number(val.ownerId),
+      ownerId: this.currentOwnerId,
       description: val.description ?? '',
       mediaLinks: this.data?.mediaLinks ?? [],
     };

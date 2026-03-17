@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BidService } from '../../services/bid.service';
+import { AuthService } from '../../services/auth.service';
 import { Bid, BidStatus } from '../../models';
 
 @Component({
@@ -53,14 +54,6 @@ import { Bid, BidStatus } from '../../models';
               <mat-error>Required</mat-error>
             }
           </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Customer ID</mat-label>
-            <input matInput formControlName="customerId" type="number" />
-            @if (form.get('customerId')?.hasError('required')) {
-              <mat-error>Required</mat-error>
-            }
-          </mat-form-field>
         </form>
       }
     </mat-dialog-content>
@@ -81,6 +74,7 @@ import { Bid, BidStatus } from '../../models';
 export class BidFormComponent {
   private fb = inject(FormBuilder);
   private bidService = inject(BidService);
+  private authService = inject(AuthService);
   private snackBar = inject(MatSnackBar);
   private dialogRef = inject(MatDialogRef<BidFormComponent>);
   data = inject<Bid | null>(MAT_DIALOG_DATA);
@@ -92,7 +86,6 @@ export class BidFormComponent {
   form = this.fb.group({
     itemName: ['', Validators.required],
     amount: [null as number | null, Validators.required],
-    customerId: [null as number | null, Validators.required],
   });
 
   statusForm = this.fb.group({
@@ -111,10 +104,14 @@ export class BidFormComponent {
       if (this.form.invalid) { this.form.markAllAsTouched(); return; }
       this.saving = true;
       const val = this.form.value;
+      const customerId = this.authService.currentCustomer()?.id;
+      if (!customerId) {
+        console.warn('BidFormComponent: currentCustomer is not available');
+      }
       const dto = {
         itemName: val.itemName!,
         amount: Number(val.amount),
-        customerId: Number(val.customerId),
+        customerId: customerId ?? 0,
       };
       this.bidService.create(dto).subscribe({
         next: () => { this.snackBar.open('Bid placed', 'Close', { duration: 2000 }); this.dialogRef.close(true); },

@@ -1,41 +1,57 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
-    path: 'dashboard',
+    path: 'login',
     loadComponent: () =>
-      import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      import('./features/auth/login.component').then((m) => m.LoginComponent),
   },
   {
-    path: 'customers',
+    path: 'register',
     loadComponent: () =>
-      import('./features/customers/customer-list.component').then((m) => m.CustomerListComponent),
+      import('./features/auth/register.component').then((m) => m.RegisterComponent),
   },
   {
-    path: 'items',
+    path: '',
     loadComponent: () =>
-      import('./features/items/item-list.component').then((m) => m.ItemListComponent),
+      import('./layout/nav/nav.component').then((m) => m.NavComponent),
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      },
+      {
+        path: 'items',
+        loadComponent: () =>
+          import('./features/items/item-list.component').then((m) => m.ItemListComponent),
+      },
+      {
+        path: 'items/:id',
+        loadComponent: () =>
+          import('./features/items/item-detail.component').then((m) => m.ItemDetailComponent),
+      },
+      {
+        path: 'auctions',
+        loadComponent: () =>
+          import('./features/auctions/auction-list.component').then((m) => m.AuctionListComponent),
+      },
+      {
+        path: 'auctions/:id',
+        loadComponent: () =>
+          import('./features/auctions/auction-detail.component').then(
+            (m) => m.AuctionDetailComponent,
+          ),
+      },
+      {
+        path: 'bids',
+        loadComponent: () =>
+          import('./features/bids/bid-list.component').then((m) => m.BidListComponent),
+      },
+    ],
   },
-  {
-    path: 'items/:id',
-    loadComponent: () =>
-      import('./features/items/item-detail.component').then((m) => m.ItemDetailComponent),
-  },
-  {
-    path: 'auctions',
-    loadComponent: () =>
-      import('./features/auctions/auction-list.component').then((m) => m.AuctionListComponent),
-  },
-  {
-    path: 'auctions/:id',
-    loadComponent: () =>
-      import('./features/auctions/auction-detail.component').then((m) => m.AuctionDetailComponent),
-  },
-  {
-    path: 'bids',
-    loadComponent: () =>
-      import('./features/bids/bid-list.component').then((m) => m.BidListComponent),
-  },
-  { path: '**', redirectTo: 'dashboard' },
+  { path: '**', redirectTo: 'login' },
 ];
