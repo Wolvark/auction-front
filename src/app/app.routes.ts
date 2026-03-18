@@ -51,6 +51,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/bids/bid-list.component').then((m) => m.BidListComponent),
       },
+      {
+        path: 'account',
+        loadComponent: () =>
+          import('./features/account/account.component').then((m) => m.AccountComponent),
+      },
     ],
   },
   { path: '**', redirectTo: 'login' },

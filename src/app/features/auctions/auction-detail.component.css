@@ -1,17 +1,49 @@
-
-      .back-btn { display: flex; align-items: center; gap: 8px; }
-      .loading-center { display: flex; justify-content: center; padding: 80px 0; }
-      .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1000px; }
-      .info-card { grid-column: span 2; border-radius: 16px !important; }
-      .status-card { border-radius: 16px !important; }
-      .bids-card { grid-column: span 2; border-radius: 16px !important; }
-      .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding-top: 12px; }
-      .info-item { display: flex; flex-direction: column; gap: 2px; }
-      .info-label { font-size: 0.75rem; color: var(--mat-sys-on-surface-variant); text-transform: uppercase; letter-spacing: 0.5px; }
-      .info-value { font-size: 1rem; color: var(--mat-sys-on-surface); }
-      .full-width { width: 100%; }
-      .empty-state { display: flex; flex-direction: column; align-items: center; padding: 32px 0; color: var(--mat-sys-on-surface-variant); }
-      .empty-state mat-icon { font-size: 40px; width: 40px; height: 40px; margin-bottom: 8px; }
-      td.mat-mdc-cell { padding: 12px 16px; }
-      th.mat-mdc-header-cell { font-weight: 600; padding: 12px 16px; }
-    
+.back-btn { display: flex; align-items: center; gap: 8px; }
+    .loading-center { display: flex; justify-content: center; padding: 80px 0; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1100px; }
+    .info-card { grid-column: span 2; border-radius: 16px !important; }
+    .live-card { border-radius: 16px !important; }
+    .timer-card { border-radius: 16px !important; }
+    .status-card { border-radius: 16px !important; }
+    .bids-card { grid-column: span 2; border-radius: 16px !important; }
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding-top: 12px; }
+    .info-item { display: flex; flex-direction: column; gap: 2px; }
+    .info-label { font-size: 0.75rem; color: var(--mat-sys-on-surface-variant); text-transform: uppercase; letter-spacing: 0.5px; }
+    .info-value { font-size: 1rem; color: var(--mat-sys-on-surface); }
+    .full-width { width: 100%; }
+    .status-chip { padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+    .status-active { background: #e8f5e9; color: #2e7d32; }
+    .status-scheduled { background: #e3f2fd; color: #1565c0; }
+    .status-ended { background: #f3e5f5; color: #6a1b9a; }
+    .status-cancelled { background: #fce4ec; color: #c62828; }
+    .status-outbid { background: #fff3e0; color: #e65100; }
+    .status-pending { background: #fff8e1; color: #f57f17; }
+    .status-accepted { background: #e8f5e9; color: #2e7d32; }
+    .status-rejected { background: #fce4ec; color: #c62828; }
+    /* Live bid card */
+    .live-icon { color: #f44336; animation: pulse 1.5s infinite; vertical-align: middle; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .countdown { font-weight: 600; font-size: 1rem; color: var(--mat-sys-on-surface); }
+    .winning-bid-section { padding: 12px 0; }
+    .winning-bid { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px; border-radius: 12px; background: linear-gradient(135deg, #e8f5e9, #f1f8e9); }
+    .winning-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #2e7d32; }
+    .winning-amount { font-size: 2rem; font-weight: 800; color: #1b5e20; }
+    .winning-bidder { font-size: 0.85rem; color: #558b2f; }
+    .no-bids-yet { display: flex; align-items: center; gap: 8px; justify-content: center; padding: 16px; color: var(--mat-sys-on-surface-variant); }
+    .divider { margin: 16px 0 !important; }
+    .bid-placement { display: flex; flex-direction: column; gap: 12px; }
+    .min-bid-hint { margin: 0; font-size: 0.875rem; color: var(--mat-sys-on-surface-variant); }
+    .bid-input-row { display: flex; align-items: center; gap: 8px; }
+    .bid-field { flex: 1; }
+    .bid-btn { width: 100%; height: 48px; font-size: 1rem; }
+    /* Timer card (non-active) */
+    .countdown-display { display: flex; align-items: center; gap: 12px; padding: 16px 0; }
+    .countdown-icon { font-size: 32px; width: 32px; height: 32px; color: var(--mat-sys-on-surface-variant); }
+    .countdown-text { font-size: 1.25rem; font-weight: 600; }
+    .final-bid { display: flex; flex-direction: column; gap: 4px; padding: 12px; border-radius: 12px; background: #f5f5f5; }
+    /* Bids table */
+    .empty-state { display: flex; flex-direction: column; align-items: center; padding: 32px 0; color: var(--mat-sys-on-surface-variant); }
+    .empty-state mat-icon { font-size: 40px; width: 40px; height: 40px; margin-bottom: 8px; }
+    td.mat-mdc-cell { padding: 12px 16px; }
+    th.mat-mdc-header-cell { font-weight: 600; padding: 12px 16px; }
+    .winning-row { background: rgba(76, 175, 80, 0.08); }

@@ -29,10 +29,16 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss"
+            ],
             "optimization": {
               "fonts": false
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "sockjs-client",
+              "@stomp/stompjs"
+            ]
           },
           "configurations": {
             "production": {

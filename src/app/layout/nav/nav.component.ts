@@ -41,6 +41,7 @@ export class NavComponent {
     { label: 'My Items', icon: 'inventory_2', route: '/items' },
     { label: 'Auctions', icon: 'gavel', route: '/auctions' },
     { label: 'My Bids', icon: 'price_check', route: '/bids' },
+    { label: 'My Wallet', icon: 'account_balance_wallet', route: '/account' },
   ];
 
   logout(): void {

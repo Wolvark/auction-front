@@ -41,6 +41,7 @@ export class BidFormComponent {
   form = this.fb.group({
     itemName: ['', Validators.required],
     amount: [null as number | null, Validators.required],
+    auctionId: [null as number | null, Validators.required],
   });
 
   statusForm = this.fb.group({
@@ -67,6 +68,7 @@ export class BidFormComponent {
         itemName: val.itemName!,
         amount: Number(val.amount),
         customerId: customerId ?? 0,
+        auctionId: Number(val.auctionId),
       };
       this.bidService.create(dto).subscribe({
         next: () => { this.snackBar.open('Bid placed', 'Close', { duration: 2000 }); this.dialogRef.close(true); },
